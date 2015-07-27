@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# We need to set ulimit before calling the main program otherise we get an EMFILE error when scanning large folders
+
+ulimit -Sn 2048
+
+# Now find the path to our index.js
+# http://stackoverflow.com/questions/59895/can-a-bash-script-tell-what-directory-its-stored-in
+
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+  DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+done
+DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+
+# Finally, call our script
+
+node "${DIR}/index.js" "$@"
