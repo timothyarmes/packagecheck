@@ -1,4 +1,5 @@
 var exec = require('sync-exec');
+var EOL = require('os').EOL;
 
 var PackageVersion = require('./package-version-parser');
 
@@ -26,7 +27,7 @@ var checkPackage = function(packageConstraint) {
       exit(1);
     }
 
-    var lines = result.stdout.split('\n');
+    var lines = result.stdout.split(EOL);
     var idx = 0;
     var latest = null;
 

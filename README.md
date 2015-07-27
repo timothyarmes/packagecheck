@@ -2,7 +2,7 @@
 
 There is a movement towards using packages for everything when developing Meteor applications (the [Telescope][1] project is a perfect example of this philosophy). Structuring Meteor applications [in this way][2] has many advantages, however it does pose one annoying issue - it's no longer possible to run `meteor list` to see if there are any updates to packages that you're using.
 
-`PackageCheck` is a command-line that address this shortcoming by checking to see if package dependencies used by a Meteor package are themselves up to date.
+`PackageCheck` is a command-line that addresses this shortcoming by checking to see if package dependencies used by a Meteor package are themselves up to date.
 
 
 ## Installation
