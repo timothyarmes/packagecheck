@@ -1,0 +1,23 @@
+{
+  "name": "packagecheck",
+  "version": "0.1.1",
+  "description": "Checks to see if package dependencies used by a Meteor package are themselves up to date.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Timothy Armes <tim@timothyarmes.com> (http://www.timothyarmes.com)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/timothyarmes/packagecheck.git"
+  },
+  "preferGlobal": true,
+  "bin": {
+    "packagecheck": "index.js"
+  },
+  "dependencies": {
+    "minimist": "^1.1.2",
+    "sync-exec": "^0.6.1",
+    "underscore": "^1.8.3"
+  }
+}
