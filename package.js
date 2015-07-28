@@ -63,6 +63,7 @@ var api = {
   imply: function() {},
   export: function() {},
   addFiles: function() {},
+  add_files: function() {},
 
   // The `use` function is called with the list of packages that we need to check
 
@@ -105,6 +106,10 @@ var Package = {
 
   onTest: function(fn) {
     fn(api);
+  },
+
+  registerBuildPlugin: function(description) {
+    api.use(description.use);
   }
 
 }
