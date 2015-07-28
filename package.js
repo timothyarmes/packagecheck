@@ -7,6 +7,8 @@ var PackageVersion = require('./package-version-parser');
 //
 // Rather than reimplement Meteor's entire package database mechanism in order
 // to get the latest versions, we simply call out to Meteor's command line.
+//
+// Returns true if output has been sent to the console
 
 var checkPackage = function(packageConstraint) {
 
@@ -42,11 +44,18 @@ var checkPackage = function(packageConstraint) {
       if (latest !== null) {
         latestVersion = latest.split(' ').filter(function(item) { return item != ''; })[0];
         if (PackageVersion.lessThan(version, latestVersion)) {
-          console.log(packageName + ' version ' + latestVersion + ' is available (' + version + ' currently specified)');
+          console.log(packageName + ' version ' + latestVersion + ' is available (' + version + ' currently specified).');
+          return true;
+        } else if (verbose) {
+          console.log(packageName + ' version ' + latestVersion + ' is up to date.');
           return true;
         }
       }
     }
+  }
+  else {
+    console.log(packageConstraint + ' does not have version contraint.');
+    return true;
   }
 
   return false;
@@ -96,7 +105,7 @@ var api = {
 var Package = {
 
   describe: function(description) {
-    console.log("Checking package " + description.name + '...');
+    console.log("=> Checking package " + description.name + '...');
   },
 
   onUse: function(fn) {

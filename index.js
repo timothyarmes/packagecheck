@@ -10,7 +10,7 @@ Npm = require('./npm');
 function help() {
 
   var help = [
-    "Usage: packagecheck [path] ...",
+    "Usage: packagecheck [--verbose] [path] ...",
     "       packagecheck --version",
     "",
     "packagecheck checks to see if package dependencies used by a Meteor package",
@@ -39,6 +39,10 @@ if (argv.version == true) {
   console.log('PackageCheck ' + pjson.version);
   process.exit(0);
 }
+
+// Flags
+
+verbose = argv.verbose ? argv.verbose : false;
 
 // Get the list of folders passed to the command, or just use the current folder otherwise
 

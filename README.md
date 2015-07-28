@@ -11,7 +11,7 @@ There is a movement towards using packages for everything when developing Meteor
 
 ## Usage
 
-    Usage: packagecheck [package-folder-path] ...
+    Usage: packagecheck [--verbose] [path] ...
            packagecheck --version
 
 With no arguments, 'packagecheck' will check the current directory, which can either be a single package, a Meteor 'packages' directory or a Meteor project directory (in the latter two cases all the individual packages will be checked).
