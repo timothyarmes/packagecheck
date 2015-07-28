@@ -10,15 +10,18 @@ Npm = require('./npm');
 function help() {
 
   var help = [
-    "Usage: packagecheck [package-folder-path] ...",
+    "Usage: packagecheck [path] ...",
     "       packagecheck --version",
     "",
     "packagecheck checks to see if package dependencies used by a Meteor package",
     "are themselves up to date.",
     "",
-    "With no arguments, 'packagecheck' will check the current directory,",
-    "which can either be a single package or a Meteor 'packages' folder (in  which ",
-    "case all the individual packages will be checked).",
+    "With no arguments, 'packagecheck' will check the current directory, which can ",
+    "either be a single package, a Meteor 'packages' directory or a Meteor project ",
+    "directory (in the latter two cases all the individual packages will be checked).",
+    "",
+    "Alternatively you may pass in paths to either individual packages, ",
+    "'packages' directories or Meteor project directories.",
     ""
   ].join('\n');
 
@@ -48,14 +51,7 @@ if (folders.length == 0) {
 
 folders.forEach(function(folder) {
 
-  var absolute = path.resolve(folder);
-  var packagePath = path.join(absolute, 'package.js');
-  if (fs.existsSync(packagePath)) {
-    // This is a package folder, we just check this package
-    require(packagePath);
-  }
-  else if (path.basename(absolute) === "packages") {
-    // We're in a packages folder - check all packages.
+  var scanPackages = function(absolute) {
     fs.readdirSync(absolute).filter(function(file) {
       var potentialPackage = path.join(absolute, file);
       if (fs.statSync(potentialPackage).isDirectory()) {
@@ -66,6 +62,31 @@ folders.forEach(function(folder) {
         }
       }
     });
+  }
+
+  var absolute = path.resolve(folder);
+  var packagePath = path.join(absolute, 'package.js');
+  var meteorPath = path.join(absolute, '.meteor');
+
+  if (fs.existsSync(packagePath)) {
+    // This is a package folder, we just check this package
+    require(packagePath);
+  }
+  else if (path.basename(absolute) === "packages") {
+    // We're in a packages folder - check all packages.
+    scanPackages(absolute);
+  }
+  else if (fs.existsSync(meteorPath)) {
+    // We're in a Meteor project directy - check the packages folder
+    var packagesPath = path.join(absolute, 'packages');
+    if (fs.existsSync(packagesPath) && fs.statSync(packagesPath).isDirectory()) {
+      scanPackages(packagesPath);
+    }
+    else {
+      console.log('No packages folder found in this project.');
+      console.log('');
+      process.exit(1);
+    }
   }
   else {
     console.log('Unable to open ' + packagePath);
