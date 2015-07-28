@@ -1,6 +1,6 @@
 {
   "name": "packagecheck",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Checks to see if package dependencies used by a Meteor package are themselves up to date.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
