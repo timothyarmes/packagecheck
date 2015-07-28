@@ -68,15 +68,7 @@ folders.forEach(function(folder) {
   var packagePath = path.join(absolute, 'package.js');
   var meteorPath = path.join(absolute, '.meteor');
 
-  if (fs.existsSync(packagePath)) {
-    // This is a package folder, we just check this package
-    require(packagePath);
-  }
-  else if (path.basename(absolute) === "packages") {
-    // We're in a packages folder - check all packages.
-    scanPackages(absolute);
-  }
-  else if (fs.existsSync(meteorPath)) {
+  if (fs.existsSync(meteorPath)) {
     // We're in a Meteor project directy - check the packages folder
     var packagesPath = path.join(absolute, 'packages');
     if (fs.existsSync(packagesPath) && fs.statSync(packagesPath).isDirectory()) {
@@ -87,6 +79,20 @@ folders.forEach(function(folder) {
       console.log('');
       process.exit(1);
     }
+  }
+  else if (path.basename(absolute) === "packages") {
+    // We're in a packages folder - check all packages.
+    // We change the processes working directory to the root project directory
+    // since some plugins expect this (such as meteorhacks:npm)
+    process.chdir('..');
+    scanPackages(absolute);
+  }
+  else if (fs.existsSync(packagePath)) {
+    // This is a package folder, we just check this package
+    // We change the processes working directory to the root project directory
+    // since some plugins expect this (such as meteorhacks:npm)
+    process.chdir('../..');
+    require(packagePath);
   }
   else {
     console.log('Unable to open ' + packagePath);
