@@ -103,7 +103,15 @@ var Package = {
     fn(api);
   },
 
+  on_use: function(fn) {
+    fn(api);
+  },
+
   onTest: function(fn) {
+    fn(api);
+  },
+
+  on_test: function(fn) {
     fn(api);
   },
 
