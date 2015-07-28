@@ -4,7 +4,7 @@
 var Npm = {
 
   depends: function() {},
-  require: function() {}
+  require: require
 }
 
 module.exports = Npm;
