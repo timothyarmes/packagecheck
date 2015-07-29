@@ -1,12 +1,6 @@
-var exec = require('sync-exec');
-var EOL = require('os').EOL;
-
 var PackageVersion = require('./package-version-parser');
 
 // Given a package constraint, check if the user has the latest version
-//
-// Rather than reimplement Meteor's entire package database mechanism in order
-// to get the latest versions, we simply call out to Meteor's command line.
 //
 // Returns true if output has been sent to the console
 
@@ -19,30 +13,9 @@ var checkPackage = function(packageConstraint) {
 
     var packageName = splitString[0];
 
-    // Use the command line to get the latest versions of this package
-
-    var result = exec('meteor show ' + packageName);
-
-    if (result.status != 0) {
-      console.log(result.stderr);
-    }
-    else {
-      var lines = result.stdout.split(EOL);
-      var idx = 0;
-      var latest = null;
-
-      // Find the list of recent versions
-      while (idx < lines.length && lines[idx++] !== 'Recent versions:') ;
-
-      // Get the last line in this list
-      while (idx < lines.length && lines[idx] !== '') {
-        latest = lines[idx];
-        idx++;
-      }
-
-      // If we have a line, get the version and test
-      if (latest !== null) {
-        latestVersion = latest.split(' ').filter(function(item) { return item != ''; })[0];
+    try {
+      var latestVersion = Version.getLatest(packageName);
+      if (latestVersion) {
         if (PackageVersion.lessThan(version, latestVersion)) {
           console.log(packageName + ' version ' + latestVersion + ' is available (' + version + ' currently specified).');
           return true;
@@ -51,6 +24,14 @@ var checkPackage = function(packageConstraint) {
           return true;
         }
       }
+      else {
+        console.log(packageName + ": version information not found.");
+        return true;
+      }
+    }
+    catch (e) {
+      console.log(e);
+      return true
     }
   }
   else {

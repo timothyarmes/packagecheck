@@ -4,6 +4,7 @@ var fs = require('fs');
 var path = require('path');
 var argv = require('minimist')(process.argv.slice(2));
 
+Version = require('./version');
 Package = require('./package');
 Npm = require('./npm');
 
