@@ -17,6 +17,8 @@
   },
   "dependencies": {
     "minimist": "^1.1.2",
+    "selfupdate": "^1.1.0",
+    "sync": "^0.2.5",
     "sync-exec": "^0.6.1",
     "underscore": "^1.8.3"
   }
