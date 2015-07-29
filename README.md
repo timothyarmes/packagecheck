@@ -4,15 +4,19 @@ There is a movement towards using packages for everything when developing Meteor
 
 `PackageCheck` is a command-line utility that addresses this shortcoming by checking to see if package dependencies used by a Meteor package are themselves up to date.
 
-
 ## Installation
 
     npm install -g packagecheck
+
+## Updating
+
+	packagecheck --selfupdate
 
 ## Usage
 
     Usage: packagecheck [-uvw] [--unconstrained] [--verbose] [--warnings] [path] ...
            packagecheck --version
+           packagecheck --selfupdate
 
 With no arguments, 'packagecheck' will check the current directory, which can either be a single package, a Meteor 'packages' directory or a Meteor project directory (in the latter two cases all the individual packages will be checked).
 Alternatively you may pass in paths to either individual packages, 'packages' directories or Meteor project directories.
