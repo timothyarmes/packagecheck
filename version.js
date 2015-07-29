@@ -1,3 +1,4 @@
+var fs = require('fs');
 var exec = require('sync-exec');
 var EOL = require('os').EOL;
 
@@ -44,6 +45,34 @@ Version.getLatest = function(packageName) {
       return latestVersion;
     }
   }
+}
+
+// Get the version of the given package that's actually used by the project
+
+Version.getVersionUsed = function(packageName) {
+
+  // Cached the used version info if we haven't already done so
+
+  if (typeof Version.used === 'undefined') {
+
+    Version.used = {};
+
+    var versions = fs.readFileSync(".meteor/versions", { encoding: 'utf-8' });
+    var lines = versions.split(EOL);
+
+    lines.forEach(function(line) {
+
+      var splitString = line.split('@');
+      var version = (splitString.length > 1) ? splitString[1] : null;
+      var name = splitString[0];
+
+      if (version)
+        Version.used[name] = version
+
+    });
+  }
+
+  return Version.used[packageName];
 }
 
 module.exports = Version;

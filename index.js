@@ -11,7 +11,7 @@ Npm = require('./npm');
 function help() {
 
   var help = [
-    "Usage: packagecheck [-vw] [--verbose] [--warnings] [path] ...",
+    "Usage: packagecheck [-uvw] [--unconstrained] [--verbose] [--warnings] [path] ...",
     "       packagecheck --version",
     "",
     "Checks to see if package dependencies used by a Meteor package are up to date.",
@@ -25,8 +25,9 @@ function help() {
     "",
     "The following options are available:",
     "",
-    "  -v, --verbose    Display output for all dependencies, even if they are up-to-date.",
-    "  -w, --warnings   Warn about use of deprecated declarations etc.",
+    "  -u, --unconstrained   Always warn about use of unconstrained dependencies.",
+    "  -v, --verbose         Display output for all dependencies, even if they are up-to-date.",
+    "  -w, --warnings        Warn about use of deprecated declarations etc.",
     ""
   ].join('\n');
 
@@ -47,6 +48,7 @@ if (argv.version == true) {
 
 // Flags
 
+unconstrained = (argv.unconstrained || argv.u) ? true : false;
 verbose = (argv.verbose || argv.v) ? true : false;
 warnings = (argv.warnings || argv.w) ? true : false;
 
@@ -92,15 +94,15 @@ folders.forEach(function(folder) {
   }
   else if (path.basename(absolute) === "packages") {
     // We're in a packages folder - check all packages.
-    // We change the processes working directory to the root project directory
-    // since some plugins expect this (such as meteorhacks:npm)
+    // We change the processes working directory to the root project directory.
+    // Some plugins expect this (such as meteorhacks:npm), and so does our code.
     process.chdir('..');
     scanPackages(absolute);
   }
   else if (fs.existsSync(packagePath)) {
     // This is a package folder, we just check this package
-    // We change the processes working directory to the root project directory
-    // since some plugins expect this (such as meteorhacks:npm)
+    // We change the processes working directory to the root project directory.
+    // Some plugins expect this (such as meteorhacks:npm), and so does our code.
     process.chdir('../..');
     require(packagePath);
   }

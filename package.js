@@ -7,11 +7,12 @@ var PackageVersion = require('./package-version-parser');
 var checkPackage = function(packageConstraint) {
 
   var splitString = packageConstraint.split('@');
+  var packageName = splitString[0];
   var version = (splitString.length > 1) ? splitString[1] : null;
 
   if (version) {
 
-    var packageName = splitString[0];
+    // This package has a version constraint
 
     try {
       var latestVersion = Version.getLatest(packageName);
@@ -25,18 +26,36 @@ var checkPackage = function(packageConstraint) {
         }
       }
       else {
-        console.log(packageName + ": version information not found.");
+        console.log(packageName + ": version information not found. Run 'meteor show " + packageName + "' for more information.");
         return true;
       }
     }
     catch (e) {
+      // If we get an error trying to find a package version then just tell the user.
       console.log(e);
       return true
     }
   }
   else {
-    console.log(packageConstraint + ' does not have version contraint.');
-    return true;
+
+    // The package is unconstrained.
+
+    var used = Version.getVersionUsed(packageName);
+    var latestVersion = Version.getLatest(packageName);
+
+    if (used) {
+      if (PackageVersion.lessThan(used, latestVersion)) {
+        console.log(packageName + ' is not constrained. Version ' + latestVersion + ' is available (' + used + ' currently used by the project).');
+        return true;
+      } else if (verbose || unconstrained) {
+        console.log(packageName + ' is not constrained. The latest version (' + latestVersion + ') is being used by the project.');
+        return true;
+      }
+    }
+    else if (verbose || unconstrained) {
+      console.log(packageName + ' does not have version contraint. The version currently used by the project cannot be determined.');
+      return true;
+    }
   }
 
   return false;
@@ -60,23 +79,22 @@ var api = {
 
     // The user can either pass an array or a string, we need to handle both cases
 
-    var updatesAvailable = false
+    var output = false
     if (packageConstraints.constructor === Array) {
       packageConstraints.forEach(function(packageConstraint) {
         if (checkPackage(packageConstraint))
-          updatesAvailable = true;
+          output = true;
       });
     }
     else {
       if (checkPackage(packageConstraints))
-        updatesAvailable = true;
+        output = true;
     }
 
     // Insert a blank link between packages if there were updates displayed
 
-    if (updatesAvailable)
-      console.log();
-
+    if (output)
+      Package.prevPackageDidOutput = true
   }
 
 }
@@ -86,7 +104,14 @@ var api = {
 var Package = {
 
   describe: function(description) {
+
+    // If the previous package output to the console then we need to add a blank line.
+
+    if (Package.prevPackageDidOutput)
+      console.log("");
+
     console.log("=> Checking package " + description.name + '...');
+    Package.prevPackageDidOutput = false;
   },
 
   onUse: function(fn) {
