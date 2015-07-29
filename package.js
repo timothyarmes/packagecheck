@@ -71,7 +71,7 @@ var api = {
   imply: function() {},
   export: function() {},
   addFiles: function() {},
-  add_files: function() {},
+  add_files: function() { if (warnings) console.log("Warning: Package uses deprecated 'add_files' declaration. Use 'addFiles' instead.") },
 
   // The `use` function is called with the list of packages that we need to check
 
@@ -113,6 +113,7 @@ var Package = {
   },
 
   on_use: function(fn) {
+    if (warnings) console.log("Warning: Package uses deprecated 'on_use' declaration. Use 'onUse' instead.")
     fn(api);
   },
 
@@ -121,6 +122,7 @@ var Package = {
   },
 
   on_test: function(fn) {
+    if (warnings) console.log("Warning: Package uses deprecated 'on_test' declaration. Use 'onTest' instead.")
     fn(api);
   },
 

@@ -10,11 +10,10 @@ Npm = require('./npm');
 function help() {
 
   var help = [
-    "Usage: packagecheck [--verbose] [path] ...",
+    "Usage: packagecheck [-vw] [--verbose] [--warnings] [path] ...",
     "       packagecheck --version",
     "",
-    "packagecheck checks to see if package dependencies used by a Meteor package",
-    "are themselves up to date.",
+    "Checks to see if package dependencies used by a Meteor package are up to date.",
     "",
     "With no arguments, 'packagecheck' will check the current directory, which can ",
     "either be a single package, a Meteor 'packages' directory or a Meteor project ",
@@ -22,6 +21,11 @@ function help() {
     "",
     "Alternatively you may pass in paths to either individual packages, ",
     "'packages' directories or Meteor project directories.",
+    "",
+    "The following options are available:",
+    "",
+    "  -v, --verbose    Display output for all dependencies, even if they are up-to-date.",
+    "  -w, --warnings   Warn about use of deprecated declarations etc.",
     ""
   ].join('\n');
 
@@ -42,7 +46,8 @@ if (argv.version == true) {
 
 // Flags
 
-verbose = argv.verbose ? argv.verbose : false;
+verbose = (argv.verbose || argv.v) ? true : false;
+warnings = (argv.warnings || argv.w) ? true : false;
 
 // Get the list of folders passed to the command, or just use the current folder otherwise
 
