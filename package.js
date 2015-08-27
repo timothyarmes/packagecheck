@@ -41,20 +41,28 @@ var checkPackage = function(packageConstraint) {
     // The package is unconstrained.
 
     var used = Version.getVersionUsed(packageName);
-    var latestVersion = Version.getLatest(packageName);
 
-    if (used) {
-      if (PackageVersion.lessThan(used, latestVersion)) {
-        console.log(packageName + ' is not constrained. Version ' + latestVersion + ' is available (' + used + ' currently used by the project).');
-        return true;
-      } else if (verbose || unconstrained) {
-        console.log(packageName + ' is not constrained. The latest version (' + latestVersion + ') is being used by the project.');
+    try {
+      var latestVersion = Version.getLatest(packageName);
+
+      if (used) {
+        if (PackageVersion.lessThan(used, latestVersion)) {
+          console.log(packageName + ' is not constrained. Version ' + latestVersion + ' is available (' + used + ' currently used by the project).');
+          return true;
+        } else if (verbose || unconstrained) {
+          console.log(packageName + ' is not constrained. The latest version (' + latestVersion + ') is being used by the project.');
+          return true;
+        }
+      }
+      else if (verbose || unconstrained) {
+        console.log(packageName + ' does not have version contraint. The version currently used by the project cannot be determined.');
         return true;
       }
     }
-    else if (verbose || unconstrained) {
-      console.log(packageName + ' does not have version contraint. The version currently used by the project cannot be determined.');
-      return true;
+    catch (e) {
+      // If we get an error trying to find a package version then just tell the user.
+      console.log(e);
+      return true
     }
   }
 

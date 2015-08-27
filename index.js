@@ -18,7 +18,7 @@ function help() {
     "       packagecheck --version",
     "       packagecheck --selfupdate",
     "",
-    "Checks to see if package dependencies used by a Meteor package are up to date.",
+    "Checks to see if package dependencies used by a Meteor package are up-to-date.",
     "",
     "With no arguments, 'packagecheck' will check the current directory, which can ",
     "either be a single package, a Meteor 'packages' directory or a Meteor project ",
@@ -88,7 +88,6 @@ else {
     // Check each folder
 
     folders.forEach(function(folder) {
-
       var scanPackages = function(absolute) {
         fs.readdirSync(absolute).filter(function(file) {
           var potentialPackage = path.join(absolute, file);

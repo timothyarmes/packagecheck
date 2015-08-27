@@ -1,6 +1,10 @@
 
 # Version History
 
+## 0.1.9
+
+* Don't fail when hitting an error when examining an unconstrained package
+
 ## 0.1.8
 
 * The version actually used by a project for **unconstrained** dependencies is now checked.
