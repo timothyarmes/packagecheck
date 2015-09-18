@@ -2,10 +2,15 @@
 
 var fs = require('fs');
 var path = require('path');
-var argv = require('minimist')(process.argv.slice(2));
 var sync = require('sync');
 var selfupdate = require('selfupdate');
 var packageJSON = require('./package.json');
+
+var minimistOpts = {
+   boolean: ['u','v','w', 'unconstrained', 'verbose', 'warnings']
+}
+
+var argv = require('minimist')(process.argv.slice(2), minimistOpts);
 
 Version = require('./version');
 Package = require('./package');
@@ -88,6 +93,7 @@ else {
     // Check each folder
 
     folders.forEach(function(folder) {
+
       var scanPackages = function(absolute) {
         fs.readdirSync(absolute).filter(function(file) {
           var potentialPackage = path.join(absolute, file);
@@ -100,6 +106,15 @@ else {
           }
         });
       }
+
+      // We change the processes working directory to the root project directory.
+      // Some plugins expect this (such as meteorhacks:npm), and so does our code.
+
+      cwd = process.cwd()
+      while (!fs.existsSync(path.join(cwd, '.meteor')) && cwd !== "/") {
+         cwd = path.resolve(cwd, '..')
+      }
+      process.chdir(cwd);
 
       var absolute = path.resolve(folder);
       var packagePath = path.join(absolute, 'package.js');
@@ -118,17 +133,9 @@ else {
         }
       }
       else if (path.basename(absolute) === "packages") {
-        // We're in a packages folder - check all packages.
-        // We change the processes working directory to the root project directory.
-        // Some plugins expect this (such as meteorhacks:npm), and so does our code.
-        process.chdir('..');
         scanPackages(absolute);
       }
       else if (fs.existsSync(packagePath)) {
-        // This is a package folder, we just check this package
-        // We change the processes working directory to the root project directory.
-        // Some plugins expect this (such as meteorhacks:npm), and so does our code.
-        process.chdir('../..');
         require(packagePath);
       }
       else {

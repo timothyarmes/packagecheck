@@ -1,6 +1,10 @@
 
 # Version History
 
+## 0.1.10
+
+* The ability to pass a path to check was broken, this has been fixed.
+
 ## 0.1.9
 
 * Don't fail when hitting an error when examining an unconstrained package
