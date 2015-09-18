@@ -1,6 +1,10 @@
 
 # Version History
 
+## 0.1.11
+
+* Fixed one thing, broke another. Sorry.
+
 ## 0.1.10
 
 * The ability to pass a path to check was broken, this has been fixed.

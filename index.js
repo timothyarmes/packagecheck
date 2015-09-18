@@ -107,6 +107,10 @@ else {
         });
       }
 
+      var absolute = path.resolve(folder);
+      var packagePath = path.join(absolute, 'package.js');
+      var meteorPath = path.join(absolute, '.meteor');
+
       // We change the processes working directory to the root project directory.
       // Some plugins expect this (such as meteorhacks:npm), and so does our code.
 
@@ -115,10 +119,6 @@ else {
          cwd = path.resolve(cwd, '..')
       }
       process.chdir(cwd);
-
-      var absolute = path.resolve(folder);
-      var packagePath = path.join(absolute, 'package.js');
-      var meteorPath = path.join(absolute, '.meteor');
 
       if (fs.existsSync(meteorPath)) {
         // We're in a Meteor project directy - check the packages folder
