@@ -80,7 +80,8 @@ var api = {
   export: function() {},
   addFiles: function() {},
   add_files: function() { if (warnings) console.log("Warning: Package uses deprecated 'add_files' declaration. Use 'addFiles' instead.") },
-
+  addAssets: function() {},
+  
   // The `use` function is called with the list of packages that we need to check
 
   use: function(packageConstraints) {
@@ -123,21 +124,25 @@ var Package = {
   },
 
   onUse: function(fn) {
-    fn(api);
+     try { fn(api); }
+     catch (e) { console.log(e); }
   },
 
   on_use: function(fn) {
     if (warnings) console.log("Warning: Package uses deprecated 'on_use' declaration. Use 'onUse' instead.")
-    fn(api);
+    try { fn(api); }
+    catch (e) { console.log(e); }
   },
 
   onTest: function(fn) {
-    fn(api);
+     try { fn(api); }
+     catch (e) { console.log(e); }
   },
 
   on_test: function(fn) {
     if (warnings) console.log("Warning: Package uses deprecated 'on_test' declaration. Use 'onTest' instead.")
-    fn(api);
+    try { fn(api); }
+    catch (e) { console.log(e); }
   },
 
   registerBuildPlugin: function(description) {

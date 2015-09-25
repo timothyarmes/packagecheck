@@ -1,6 +1,10 @@
 
 # Version History
 
+## 0.1.12
+
+* Added support for Meteor 1.2
+
 ## 0.1.11
 
 * Fixed one thing, broke another. Sorry.
