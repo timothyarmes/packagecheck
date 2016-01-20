@@ -1,6 +1,10 @@
 
 # Version History
 
+## 0.2.0
+
+* Added support for Meteor 1.3
+
 ## 0.1.12
 
 * Added support for Meteor 1.2
