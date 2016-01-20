@@ -1,6 +1,10 @@
 
 # Version History
 
+## 0.2.1
+
+* Allow for local packages without versions numbers 
+
 ## 0.2.0
 
 * Added support for Meteor 1.3

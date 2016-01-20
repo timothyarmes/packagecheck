@@ -43,7 +43,7 @@ var checkPackage = function(packageConstraint) {
     try {
       var latestVersion = Version.getLatest(packageName);
 
-      if (used) {
+      if (used && latestVersion && latestVersion !== 'local') {
         if (PackageVersion.lessThan(used, latestVersion)) {
           console.log(packageName + ' is not constrained. Version ' + latestVersion + ' is available (' + used + ' currently used by the project).');
           return true;
