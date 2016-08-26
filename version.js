@@ -1,6 +1,5 @@
 var fs = require('fs');
 var exec = require('sync-exec');
-var EOL = require('os').EOL;
 
 Version = {}
 
@@ -25,7 +24,7 @@ Version.getLatest = function(packageName) {
     throw(result.stderr);
   }
   else {
-    var lines = result.stdout.split(EOL);
+    var lines = result.stdout.split('\n');
     var idx = 0;
     var latest = null;
 
